@@ -7,6 +7,8 @@ import './App.css'
 import Home from './components/Home';
 import UserTest from './components/user-test';
 import Recipe from './components/Recipe';
+import RegisterForm from './components/Register';
+import LoginForm from './components/Login';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,6 +54,8 @@ function App() {
               <Nav.Link as={Link} to="/Home">Home</Nav.Link>
               <Nav.Link as={Link} to="/User-Test">User-Test</Nav.Link>
               <Nav.Link as={Link} to="/Recipe">Rezepte</Nav.Link>
+              <Nav.Link as={Link} to="/Register">Register</Nav.Link>
+              <Nav.Link as={Link} to="/Login">Login</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -62,7 +66,8 @@ function App() {
             <Route path="/home" element={<Home isName={isName} isLoggedIn={isLoggedIn} />} />
             <Route path="/User-Test" element={<UserTest />} />
             <Route path="/Recipe" element={<Recipe />} />
-              
+            <Route path="/Register" element={<RegisterForm />} />
+            <Route path="/Login" element={<LoginForm isName={isName} isLoggedIn={isLoggedIn} />} />
           </Routes>
         </main>
       </div>

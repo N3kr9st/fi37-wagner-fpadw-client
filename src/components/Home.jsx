@@ -6,7 +6,7 @@ function Home({ isName, isLoggedIn }) {
  useEffect(() => {
     async function callServer() {
         try {
-            const response = await fetch(`https://user-api.mshome.net`);
+            const response = await fetch(`http://api-test.mshome.net:3001`);
             const data = await response.json();
             console.log(data);
         } catch (error) {

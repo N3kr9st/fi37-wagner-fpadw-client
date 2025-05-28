@@ -9,6 +9,9 @@ import UserTest from './components/user-test';
 import Recipe from './components/Recipe';
 import RegisterForm from './components/Register';
 import LoginForm from './components/Login';
+import AddRecipeForm from './components/AddRecipe';
+import AddCommentForm from './components/AddComent';
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -54,7 +57,9 @@ function App() {
               <Nav.Link as={Link} to="/Home">Home</Nav.Link>
               <Nav.Link as={Link} to="/User-Test">User-Test</Nav.Link>
               <Nav.Link as={Link} to="/Recipe">Rezepte</Nav.Link>
-              <Nav.Link as={Link} to="/Register">Register</Nav.Link>
+              <Nav.Link as={Link} to="/AddRecipe">Neues Rezept</Nav.Link>
+              <Nav.Link as={Link} to="/AddComment">Neues Kommentar</Nav.Link>
+                            <Nav.Link as={Link} to="/Register">Register</Nav.Link>
               <Nav.Link as={Link} to="/Login">Login</Nav.Link>
             </Nav>
           </Navbar.Collapse>
@@ -67,6 +72,8 @@ function App() {
             <Route path="/User-Test" element={<UserTest />} />
             <Route path="/Recipe" element={<Recipe />} />
             <Route path="/Register" element={<RegisterForm />} />
+            <Route path="/AddRecipe" element={<AddRecipeForm />} />
+            <Route path="/AddComment" element={<AddCommentForm />} />
             <Route path="/Login" element={<LoginForm isName={isName} isLoggedIn={isLoggedIn} />} />
           </Routes>
         </main>

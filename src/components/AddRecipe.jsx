@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 
-const RecipeForm = () => {
+const RecipeForm = (userID) => {
   const [recipeName, setRecipeName] = useState('');
   const [instructions, setInstructions] = useState('');
   const [ingredients, setIngredients] = useState(['']);
   const [image, setImage] = useState(null);
+  
 
   const handleIngredientChange = (index, value) => {
     const newIngredients = [...ingredients];
@@ -42,10 +43,13 @@ const RecipeForm = () => {
     formData.append('name', recipeName);
     formData.append('preparation', instructions);
     formData.append('ingredients', ingredients.filter(i => i.trim() !== '').join(', '));
+    formData.append('userID', userID.userID);
     if (image) {
       formData.append('image', image);
     }
-
+    for (let pair of formData.entries()) {
+      console.log(pair[0]+ ': ' + pair[1]);
+    }
     try {
       const response = await fetch('http://api-test.mshome.net:3001/addRecipe', {
         method: 'POST',

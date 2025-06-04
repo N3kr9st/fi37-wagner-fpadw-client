@@ -11,6 +11,7 @@ import RegisterForm from './components/Register';
 import LoginForm from './components/Login';
 import AddRecipeForm from './components/AddRecipe';
 import AddCommentForm from './components/AddComent';
+import EditRecipe from './components/UserRecipe';
 
 
 function App() {
@@ -58,7 +59,8 @@ function App() {
               <Nav.Link as={Link} to="/User-Test">User-Test</Nav.Link>
               <Nav.Link as={Link} to="/Recipe">Rezepte</Nav.Link>
               {isLoggedIn && <Nav.Link as={Link} to="/AddRecipe">Neues Rezept</Nav.Link>}
-              <Nav.Link as={Link} to="/Register">Register</Nav.Link>
+              {isLoggedIn && <Nav.Link as={Link} to="/EditRecipe">Meine Rezepte</Nav.Link>}
+              {!isLoggedIn && <Nav.Link as={Link} to="/Register">Register</Nav.Link>}
                {isLoggedIn ? <Nav.Link onClick={handleLogout}>Logout</Nav.Link> : <Nav.Link as={Link} to="/login">Login</Nav.Link> }
             </Nav>
           </Navbar.Collapse>
@@ -71,7 +73,8 @@ function App() {
             <Route path="/User-Test" element={<UserTest />} />
             <Route path="/Recipe" element={<Recipe isLoggedIn={isLoggedIn} />} />
             <Route path="/Register" element={<RegisterForm />} />
-            <Route path="/AddRecipe" element={<AddRecipeForm />} />
+            <Route path="/AddRecipe" element={<AddRecipeForm userID={userId} />} />
+            <Route path="/EditRecipe" element={<EditRecipe userID={userId} />} />
             <Route path="/AddComment" element={<AddCommentForm />} />
             <Route path="/Login" element={<LoginForm isName={isName} isLoggedIn={isLoggedIn} setUserID={setUserId} setIsLoggedIn={setIsLoggedIn} setName={setName}/>} />
           </Routes>

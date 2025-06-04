@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import RecipeComments from './Comments';
+import AddComment from './AddComent';
+
+
 
 const RecipeList = () => {
   const [recipes, setRecipes] = useState([]);
@@ -25,7 +29,7 @@ const RecipeList = () => {
     recipe.recipeTitle?.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Schließt Modal, wenn Hintergrund angeklickt wird
+
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains('overlay')) {
       setSelectedRecipe(null);
@@ -65,7 +69,7 @@ const RecipeList = () => {
         </ul>
       )}
 
-      {/* Overlay Modal */}
+
       {selectedRecipe && (
         <div
           className="overlay"
@@ -80,7 +84,13 @@ const RecipeList = () => {
               onClick={() => setSelectedRecipe(null)}
             ></button>
             <h3>{selectedRecipe.recipeTitle}</h3>
-            <p><strong>User ID:</strong> {selectedRecipe.userID}</p>
+            <p><img
+              src={selectedRecipe.imagePath
+                ? `http://api-test.mshome.net:3001/${selectedRecipe.imagePath.replace(/\\/g, '/')}`
+                : 'http://api-test.mshome.net:3001/uploads/default.png'}
+              style={{ maxWidth: '250px', width: '100%', height: 'auto' }}
+              alt="Rezeptbild"
+            /></p>
             <p><strong>Zubereitung:</strong> {selectedRecipe.zubereitung}</p>
             <div>
               <strong>Zutaten:</strong>
@@ -89,12 +99,15 @@ const RecipeList = () => {
                   <li key={i}>{zutat.trim()}</li>
                 ))}
               </ul>
+              <RecipeComments recipeID={selectedRecipe.recipeID} />
+              <AddComment recipeID={selectedRecipe.recipeID} userID={selectedRecipe.userID} />
+
             </div>
           </div>
         </div>
       )}
 
-      {/* Inline CSS Styles for overlay + animation */}
+
       <style>{`
         .overlay {
           position: fixed;
@@ -130,7 +143,7 @@ const RecipeList = () => {
   );
 };
 
-// Styles als JS-Objekte, falls du inline bevorzugst
+
 const overlayStyles = {
   position: 'fixed',
   top: 0, left: 0, right: 0, bottom: 0,

@@ -69,7 +69,7 @@ function App() {
           <Routes>
             <Route path="/home" element={<Home isName={isName} isLoggedIn={isLoggedIn} />} />
             <Route path="/User-Test" element={<UserTest />} />
-            <Route path="/Recipe" element={<Recipe />} />
+            <Route path="/Recipe" element={<Recipe isLoggedIn={isLoggedIn} />} />
             <Route path="/Register" element={<RegisterForm />} />
             <Route path="/AddRecipe" element={<AddRecipeForm />} />
             <Route path="/AddComment" element={<AddCommentForm />} />

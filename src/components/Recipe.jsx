@@ -11,6 +11,10 @@ const RecipeList = ({isLoggedIn}) => {
   const [search, setSearch] = useState('');
   const [commentAdded, setCommentAdded] = useState(false);
 
+  const handleCommentAdded = () => {
+  setCommentAdded(prev => !prev);
+};
+
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -101,9 +105,8 @@ const RecipeList = ({isLoggedIn}) => {
                   <li key={i}>{zutat.trim()}</li>
                 ))}
               </ul>
-              <RecipeComments recipeID={selectedRecipe.recipeID} commentAdded={commentAdded} />
-              {isLoggedIn && <AddComment recipeID={selectedRecipe.recipeID} userID={selectedRecipe.userID} isLoggedIn={isLoggedIn} onCommentAdded={() => setCommentAdded(prev => !prev)}/>}
-
+              <RecipeComments recipeID={selectedRecipe.recipeID} commentAdded={commentAdded}  />
+              {isLoggedIn && <AddComment recipeID={selectedRecipe.recipeID} userID={selectedRecipe.userID} isLoggedIn={isLoggedIn}   onCommentAdded={handleCommentAdded} />}
             </div>
           </div>
         </div>

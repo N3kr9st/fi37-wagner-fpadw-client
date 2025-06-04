@@ -33,8 +33,7 @@ const RecipeComments = ({ recipeID ,commentAdded}) => {
     };
 
     fetchComments();
-  }, [commentAdded,recipeID]);
-    console.log(comments);
+  }, [recipeID, commentAdded]);
 
 
   if (comments.length === 0) {

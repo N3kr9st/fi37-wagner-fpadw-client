@@ -7,7 +7,7 @@ const CommentForm = ({isLoggedIn,recipeID,onCommentAdded}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    onCommentAdded();
+
 
     try {
       const response = await fetch("http://api-test.mshome.net:3001/addComment", {
@@ -25,6 +25,9 @@ const CommentForm = ({isLoggedIn,recipeID,onCommentAdded}) => {
       const data = await response.json();
       setMessage("Kommentar erfolgreich gesendet!");
       setComment("");
+      if (onCommentAdded) {
+        onCommentAdded();
+      }
     } catch (error) {
       setMessage("Fehler: " + error.message);
     }

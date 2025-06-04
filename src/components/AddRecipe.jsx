@@ -5,6 +5,7 @@ const RecipeForm = () => {
   const [recipeName, setRecipeName] = useState('');
   const [instructions, setInstructions] = useState('');
   const [ingredients, setIngredients] = useState(['']);
+  const [image, setImage] = useState(null);
 
   const handleIngredientChange = (index, value) => {
     const newIngredients = [...ingredients];
@@ -21,23 +22,34 @@ const RecipeForm = () => {
     setIngredients(newIngredients);
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.size > 5 * 1024 * 1024) {
+      alert('Bild darf maximal 5MB groß sein.');
+      return;
+    }
+    if (file && !file.type.startsWith('image/')) {
+      alert('Nur Bilddateien sind erlaubt.');
+      return;
+    }
+    setImage(file);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const ingredientString = ingredients.filter(i => i.trim() !== '').join(', ');
 
-    const payload = {
-      name: recipeName,
-      preparation: instructions,
-      ingredients: ingredientString,
-    };
+    const formData = new FormData();
+    formData.append('name', recipeName);
+    formData.append('preparation', instructions);
+    formData.append('ingredients', ingredients.filter(i => i.trim() !== '').join(', '));
+    if (image) {
+      formData.append('image', image);
+    }
 
     try {
       const response = await fetch('http://api-test.mshome.net:3001/addRecipe', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+        body: formData,
       });
 
       if (response.ok) {
@@ -45,6 +57,7 @@ const RecipeForm = () => {
         setRecipeName('');
         setInstructions('');
         setIngredients(['']);
+        setImage(null);
       } else {
         alert('Fehler beim Senden des Rezepts.');
       }
@@ -56,7 +69,7 @@ const RecipeForm = () => {
   return (
     <Container className="mt-4">
       <h2>Rezept erstellen</h2>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} encType="multipart/form-data">
         <Form.Group className="mb-3">
           <Form.Label>Rezeptname</Form.Label>
           <Form.Control
@@ -104,6 +117,11 @@ const RecipeForm = () => {
         <Button variant="secondary" onClick={addIngredient} className="mb-3">
           Weitere Zutat hinzufügen
         </Button>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Bild hochladen (max. 5MB)</Form.Label>
+          <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
+        </Form.Group>
 
         <div>
           <Button variant="primary" type="submit">

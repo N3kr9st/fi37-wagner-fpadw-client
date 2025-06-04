@@ -1,12 +1,13 @@
  import React, { useState } from "react";
 import { Form, Button, Alert, Container } from "react-bootstrap";
 
-const CommentForm = () => {
+const CommentForm = ({isLoggedIn,recipeID,onCommentAdded}) => {
   const [comment, setComment] = useState("");
   const [message, setMessage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    onCommentAdded();
 
     try {
       const response = await fetch("http://api-test.mshome.net:3001/addComment", {
@@ -14,7 +15,7 @@ const CommentForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ comment }),
+        body: JSON.stringify({ comment, recipeID: recipeID, userID: localStorage.getItem('userId') }), 
       });
 
       if (!response.ok) {

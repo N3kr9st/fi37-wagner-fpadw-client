@@ -4,11 +4,13 @@ import AddComment from './AddComent';
 
 
 
-const RecipeList = () => {
+const RecipeList = ({isLoggedIn}) => {
   const [recipes, setRecipes] = useState([]);
   const [error, setError] = useState(null);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [search, setSearch] = useState('');
+  const [commentAdded, setCommentAdded] = useState(false);
+
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -99,8 +101,8 @@ const RecipeList = () => {
                   <li key={i}>{zutat.trim()}</li>
                 ))}
               </ul>
-              <RecipeComments recipeID={selectedRecipe.recipeID} />
-              <AddComment recipeID={selectedRecipe.recipeID} userID={selectedRecipe.userID} />
+              <RecipeComments recipeID={selectedRecipe.recipeID} commentAdded={commentAdded} />
+              {isLoggedIn && <AddComment recipeID={selectedRecipe.recipeID} userID={selectedRecipe.userID} isLoggedIn={isLoggedIn} onCommentAdded={() => setCommentAdded(prev => !prev)}/>}
 
             </div>
           </div>

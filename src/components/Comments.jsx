@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner, Alert, ListGroup } from 'react-bootstrap';
 
-const RecipeComments = ({ recipeID }) => {
+const RecipeComments = ({ recipeID ,commentAdded}) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,7 +33,7 @@ const RecipeComments = ({ recipeID }) => {
     };
 
     fetchComments();
-  }, [recipeID]);
+  }, [commentAdded,recipeID]);
     console.log(comments);
 
 

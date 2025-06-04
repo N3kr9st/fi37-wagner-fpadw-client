@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const LoginForm = ({ isLoggedIn }) => {
+const LoginForm = ({ isLoggedIn ,setIsLoggedIn,setName,setUserID}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -19,7 +19,7 @@ const LoginForm = ({ isLoggedIn }) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password }) // 👈 username statt email
+        body: JSON.stringify({ username, password }) 
       });
 
       const data = await response.json();
@@ -27,16 +27,20 @@ const LoginForm = ({ isLoggedIn }) => {
       if (!response.ok) {
         throw new Error(data.error || 'Login fehlgeschlagen');
       }
-
+      
       localStorage.setItem('token', data.token);
       localStorage.setItem('userId', data.userId);
-
+      setUsername('');
+      setIsLoggedIn(true); 
+      setName(username); 
+      setUserID(data.userId); 
       setSuccess('Login erfolgreich!');
       navigate('/home');
     } catch (err) {
       setError(err.message);
     }
   };
+ 
 
   if (isLoggedIn) {
     return <p className="mt-5 text-center">Du bist bereits eingeloggt.</p>;

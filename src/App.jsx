@@ -57,10 +57,9 @@ function App() {
               <Nav.Link as={Link} to="/Home">Home</Nav.Link>
               <Nav.Link as={Link} to="/User-Test">User-Test</Nav.Link>
               <Nav.Link as={Link} to="/Recipe">Rezepte</Nav.Link>
-              <Nav.Link as={Link} to="/AddRecipe">Neues Rezept</Nav.Link>
-              <Nav.Link as={Link} to="/AddComment">Neues Kommentar</Nav.Link>
-                            <Nav.Link as={Link} to="/Register">Register</Nav.Link>
-              <Nav.Link as={Link} to="/Login">Login</Nav.Link>
+              {isLoggedIn && <Nav.Link as={Link} to="/AddRecipe">Neues Rezept</Nav.Link>}
+              <Nav.Link as={Link} to="/Register">Register</Nav.Link>
+               {isLoggedIn ? <Nav.Link onClick={handleLogout}>Logout</Nav.Link> : <Nav.Link as={Link} to="/login">Login</Nav.Link> }
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -74,7 +73,7 @@ function App() {
             <Route path="/Register" element={<RegisterForm />} />
             <Route path="/AddRecipe" element={<AddRecipeForm />} />
             <Route path="/AddComment" element={<AddCommentForm />} />
-            <Route path="/Login" element={<LoginForm isName={isName} isLoggedIn={isLoggedIn} />} />
+            <Route path="/Login" element={<LoginForm isName={isName} isLoggedIn={isLoggedIn} setUserID={setUserId} setIsLoggedIn={setIsLoggedIn} setName={setName}/>} />
           </Routes>
         </main>
       </div>

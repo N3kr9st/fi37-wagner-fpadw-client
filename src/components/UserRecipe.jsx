@@ -95,7 +95,7 @@ const RecipeList = ({isLoggedIn}) => {
             <p><img
               src={selectedRecipe.imagePath
                 ? `http://api-test.mshome.net:3001/${selectedRecipe.imagePath.replace(/\\/g, '/')}`
-                : 'http://api-test.mshome.net:3001/uploads/default.png'}
+                : 'http://api-test.mshome.net:3001/default_Image/default.png'}
               style={{ maxWidth: '250px', width: '100%', height: 'auto' }}
               alt="Rezeptbild"
             /></p>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 
 function Home({ isName, isLoggedIn }) {
-  
+  const name = localStorage.getItem('username');
  useEffect(() => {
     async function callServer() {
         try {
@@ -20,7 +20,7 @@ function Home({ isName, isLoggedIn }) {
   return (
     <>
       {isLoggedIn ? (
-        <h1>{isName}, willkommen auf unserer Website!</h1>
+        <h1>{name}, willkommen auf unserer Website!</h1>
       ) : (
         <Link to="/login">Bitte loggen Sie sich ein</Link>
       )}

@@ -30,6 +30,7 @@ const LoginForm = ({ isLoggedIn ,setIsLoggedIn,setName,setUserID}) => {
       
       localStorage.setItem('token', data.token);
       localStorage.setItem('userId', data.userId);
+      localStorage.setItem('username', username);
       setUsername('');
       setIsLoggedIn(true); 
       setName(username); 

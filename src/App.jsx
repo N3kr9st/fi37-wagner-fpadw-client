@@ -33,6 +33,7 @@ function App() {
   const handleLogout = () => {
       localStorage.removeItem('token');
       localStorage.removeItem('userId');
+      localStorage.removeItem('username');
       setIsLoggedIn(false);
       navigate('/Login');
   };

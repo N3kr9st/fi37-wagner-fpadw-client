@@ -80,9 +80,10 @@ const RecipeList = ({isLoggedIn}) => {
         <div
           className="overlay"
           onClick={handleOverlayClick}
-          style={overlayStyles}
+          style={{ ...overlayStyles }}
+
         >
-          <div className="card p-4" style={modalStyles}>
+          <div className="card p-4 scrollbar-hidden" style={{...modalStyles}}>
             <button
               type="button"
               className="btn-close float-end"
@@ -143,6 +144,17 @@ const RecipeList = ({isLoggedIn}) => {
           from {transform: translateY(-20px); opacity: 0;}
           to {transform: translateY(0); opacity: 1;}
         }
+        .scrollbar-hidden {
+        overflow: auto; 
+        height: 100%; 
+
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      .scrollbar-hidden::-webkit-scrollbar {
+        display: none;  
+      }
       `}</style>
     </div>
   );

@@ -5,7 +5,6 @@ import { Container, Nav, Navbar } from 'react-bootstrap';
 import './App.css'
 
 import Home from './components/Home';
-import UserTest from './components/user-test';
 import Recipe from './components/Recipe';
 import RegisterForm from './components/Register';
 import LoginForm from './components/Login';
@@ -56,7 +55,6 @@ function App() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto" activeKey={location.pathname}>
               <Nav.Link as={Link} to="/Home">Home</Nav.Link>
-              <Nav.Link as={Link} to="/User-Test">User-Test</Nav.Link>
               <Nav.Link as={Link} to="/Recipe">Rezepte</Nav.Link>
               {isLoggedIn && <Nav.Link as={Link} to="/AddRecipe">Neues Rezept</Nav.Link>}
               {isLoggedIn && <Nav.Link as={Link} to="/EditRecipe">Meine Rezepte</Nav.Link>}
@@ -70,7 +68,6 @@ function App() {
         <main>
           <Routes>
             <Route path="/home" element={<Home isName={isName} isLoggedIn={isLoggedIn} />} />
-            <Route path="/User-Test" element={<UserTest />} />
             <Route path="/Recipe" element={<Recipe isLoggedIn={isLoggedIn} />} />
             <Route path="/Register" element={<RegisterForm />} />
             <Route path="/AddRecipe" element={<AddRecipeForm userID={userId} />} />

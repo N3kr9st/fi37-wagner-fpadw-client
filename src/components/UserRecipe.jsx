@@ -4,7 +4,7 @@ import AddComment from './AddComent';
 
 
 
-const RecipeList = ({isLoggedIn}) => {
+const RecipeList = ({ isLoggedIn }) => {
   const [recipes, setRecipes] = useState([]);
   const [error, setError] = useState(null);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -12,31 +12,56 @@ const RecipeList = ({isLoggedIn}) => {
   const [commentAdded, setCommentAdded] = useState(false);
   const USER_ID = localStorage.getItem('userId');
 
-  const handleCommentAdded = () => {
-  setCommentAdded(prev => !prev);
-};
 
+
+  const handleCommentAdded = () => {
+    setCommentAdded(prev => !prev);
+  };
+
+  const fetchRecipes = async () => {
+    try {
+      const response = await fetch(`http://api-test.mshome.net:3001/userRecipe?userID=${USER_ID}`);
+      if (!response.ok) throw new Error('Netzwerkantwort war nicht ok');
+      const data = await response.json();
+      setRecipes(data);
+    } catch (err) {
+      console.error('Fehler beim Abrufen:', err);
+      setError('Fehler beim Laden der Rezeptdaten');
+    }
+  };
 
   useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const response = await fetch(`http://api-test.mshome.net:3001/userRecipe?userID=${USER_ID}`);
-        console.log(response);
-        if (!response.ok) throw new Error('Netzwerkantwort war nicht ok');
-        const data = await response.json();
-        setRecipes(data);
-      } catch (err) {
-        console.error('Fehler beim Abrufen:', err);
-        setError('Fehler beim Laden der Rezeptdaten');
-      }
-    };
     fetchRecipes();
-  }, []);
+  }, [USER_ID]);
+
+  const handleDeleteRecipe = async (recipeID) => {
+    console.log("DELETEFUNKTION WIRD AUFGERUFEN");
+    console.log("RECIPEID:", recipeID);
+
+    try {
+        const response = await fetch(`http://api-test.mshome.net:3001/deleteRecipe/${recipeID}`, {
+        method: 'DELETE',
+        });
+        console.log("RESPONSE:", response);
+        console.log("RESPONSE OK:", response.ok);
+        if (!response.ok) throw new Error('Fehler beim Löschen des Rezepts');
+
+        await fetchRecipes();
+        
+        if (selectedRecipe?.recipeID === recipeID) {
+        setSelectedRecipe(null);
+        }
+
+    } catch (err) {
+        console.error('Löschfehler:', err);
+        alert('Fehler beim Löschen des Rezepts');
+    }
+    };
+
 
   const filteredRecipes = recipes.filter(recipe =>
     recipe.recipeTitle?.toLowerCase().includes(search.toLowerCase())
   );
-
 
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains('overlay')) {
@@ -67,16 +92,19 @@ const RecipeList = ({isLoggedIn}) => {
           {filteredRecipes.map(recipe => (
             <li
               key={recipe.recipeID}
-              className="list-group-item list-group-item-action"
+              className="list-group-item d-flex justify-content-between align-items-center"
               style={{ cursor: 'pointer' }}
               onClick={() => setSelectedRecipe(recipe)}
             >
               {recipe.recipeTitle}
+              <button
+                type="button"
+                className="btn btn-danger btn-sm"
+                onClick={(e) => {e.stopPropagation(); handleDeleteRecipe(recipe.recipeID);}}>Löschen</button>
             </li>
           ))}
         </ul>
       )}
-
 
       {selectedRecipe && (
         <div
@@ -91,14 +119,17 @@ const RecipeList = ({isLoggedIn}) => {
               aria-label="Schließen"
               onClick={() => setSelectedRecipe(null)}
             ></button>
-            <h3>{selectedRecipe.recipeTitle}</h3>
-            <p><img
-              src={selectedRecipe.imagePath
-                ? `http://api-test.mshome.net:3001/${selectedRecipe.imagePath.replace(/\\/g, '/')}`
-                : 'http://api-test.mshome.net:3001/default_Image/default.png'}
-              style={{ maxWidth: '250px', width: '100%', height: 'auto' }}
-              alt="Rezeptbild"
-            /></p>
+            <h2>ID: {selectedRecipe.recipeID}</h2>
+            <h3>Titel: {selectedRecipe.recipeTitle}</h3>
+            <p>
+              <img
+                src={selectedRecipe.imagePath
+                  ? `http://api-test.mshome.net:3001/${selectedRecipe.imagePath.replace(/\\/g, '/')}`
+                  : 'http://api-test.mshome.net:3001/default_Image/default.png'}
+                style={{ maxWidth: '250px', width: '100%', height: 'auto' }}
+                alt="Rezeptbild"
+              />
+            </p>
             <p><strong>Zubereitung:</strong> {selectedRecipe.zubereitung}</p>
             <div>
               <strong>Zutaten:</strong>
@@ -107,13 +138,19 @@ const RecipeList = ({isLoggedIn}) => {
                   <li key={i}>{zutat.trim()}</li>
                 ))}
               </ul>
-              <RecipeComments recipeID={selectedRecipe.recipeID} commentAdded={commentAdded}  />
-              {isLoggedIn && <AddComment recipeID={selectedRecipe.recipeID} userID={selectedRecipe.userID} isLoggedIn={isLoggedIn}   onCommentAdded={handleCommentAdded} />}
+              <RecipeComments recipeID={selectedRecipe.recipeID} commentAdded={commentAdded} />
+              {isLoggedIn && (
+                <AddComment
+                  recipeID={selectedRecipe.recipeID}
+                  userID={selectedRecipe.userID}
+                  isLoggedIn={isLoggedIn}
+                  onCommentAdded={handleCommentAdded}
+                />
+              )}
             </div>
           </div>
         </div>
       )}
-
 
       <style>{`
         .overlay {
